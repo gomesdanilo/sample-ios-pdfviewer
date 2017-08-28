@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+/**
+ Renders a single page pdf. Represents a screen/viewcontroller.
+ */
 @interface PDFViewController : UIViewController
 
 -(instancetype)initWithFilePath:(NSString*)filePath;
-
 
 @end

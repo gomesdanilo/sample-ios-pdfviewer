@@ -16,16 +16,16 @@
 
 @implementation PDFView
 
-
--(void)renderPDF:(PDFDocument *)document
-{
+-(void)loadCanvas {
+    
     if(self.imageView == nil){
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:self.imageView];
     }
-    
-    self.document = document;
+}
+
+-(void)drawPDFOnCanvas {
     
     CGPDFPageRef pageRef = CGPDFDocumentGetPage(self.document.documentRef, 1);
     CGRect cropBox = CGPDFPageGetBoxRect(pageRef, kCGPDFCropBox);
@@ -33,14 +33,24 @@
     UIGraphicsBeginImageContext(cropBox.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
+    // Flips PDF page. Without that the PDF would appear mirrored vertically.
     CGContextTranslateCTM(context, 0, cropBox.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
     
     CGContextDrawPDFPage(context, pageRef);
-    
     UIImage *pdfImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+    // Updates canvas. Image will appear fitted in canvas.
     [self.imageView setImage:pdfImage];
+}
+
+-(void)renderPDFWithFilePath:(NSString *)filePath
+{
+    self.document = [[PDFDocument alloc] initWithFilePath:filePath];
+
+    [self loadCanvas];
+    [self drawPDFOnCanvas];
 }
 
 @end

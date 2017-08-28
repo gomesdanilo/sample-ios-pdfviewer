@@ -7,12 +7,9 @@
 //
 
 #import "PDFDocument.h"
-//#import <QuartzCore/QuartzCore.h>
 
 @interface PDFDocument()
-
 @property (nonatomic, strong) NSString *filePath;
-
 @end
 
 @implementation PDFDocument
@@ -21,12 +18,9 @@
 {
     self = [super init];
     self.filePath = filePath;
-    return self;
-}
-
--(void)loadDocument
-{
+    
     [self loadDocumentWithFilePath:self.filePath];
+    return self;
 }
 
 -(void)loadDocumentWithFilePath:(NSString*)filePath {
@@ -40,12 +34,7 @@
     CFURLRef urlRef = (__bridge CFURLRef)url;
     
     self.documentRef = CGPDFDocumentCreateWithURL(urlRef);
-    
     self.numberOfPages = CGPDFDocumentGetNumberOfPages(self.documentRef);
-    
-    
-    
-    NSLog(@"%p", self.documentRef);
 }
 
 -(void)dealloc

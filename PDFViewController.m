@@ -11,29 +11,34 @@
 #import "PDFView.h"
 
 @interface PDFViewController()
-@property (nonatomic, strong) PDFDocument *document;
+@property (nonatomic, strong) NSString *filePath;
 @property (nonatomic, strong) PDFView *pdfView;
-
 @end
 
 @implementation PDFViewController
 
+#pragma mark - Lifecycle
+
 -(instancetype)initWithFilePath:(NSString*)filePath {
 
     self = [super init];
-    self.document = [[PDFDocument alloc] initWithFilePath:filePath];
+    self.filePath = filePath;
     return self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.document loadDocument];
-    
+    [self loadPDFView];
+}
+
+#pragma mark - Aux
+
+-(void)loadPDFView{
     if(self.pdfView == nil){
         self.pdfView = [[PDFView alloc] initWithFrame:self.view.bounds];
         [self.view addSubview:self.pdfView];
-        [self.pdfView renderPDF:self.document];
+        [self.pdfView renderPDFWithFilePath:self.filePath];
     }
 }
 

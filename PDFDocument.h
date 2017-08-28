@@ -11,10 +11,14 @@
 
 @interface PDFDocument : NSObject
 
+#pragma mark - Internal components. Should not be used externally.
+
 @property (nonatomic, assign) CGPDFDocumentRef documentRef;
 @property (nonatomic, assign) NSInteger numberOfPages;
 
+
+#pragma mark - Public
+
 -(instancetype)initWithFilePath:(NSString*)filePath;
--(void)loadDocument;
 
 @end
